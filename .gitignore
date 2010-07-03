@@ -1,0 +1,14 @@
+_build
+blib
+Build
+Build.bat
+MANIFEST.bak
+META.yml
+MYMETA.yml
+*.def
+*.pdb
+*.lib
+*.exp
+pod2htm?.tmp
+*.swp
+*.swo
