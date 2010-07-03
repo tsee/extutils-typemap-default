@@ -93,7 +93,7 @@ __END__
 
 =head1 SEE ALSO
 
-L<ExtUtils::Typemap>, L<ExtUtils::Typemap::Default>, L<ExtUtils::Typemap::CPlusPlus>
+L<ExtUtils::Typemap>, L<ExtUtils::Typemap::Default>, L<ExtUtils::Typemap::ObjectMap>
 
 =head1 AUTHOR
 

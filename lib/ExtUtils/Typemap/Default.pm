@@ -59,6 +59,10 @@ sub new {
 
 __END__
 
+=head1 SEE ALSO
+
+L<ExtUtils::Typemap>, L<ExtUtils::Typemap::ObjectMap>, L<ExtUtils::Typemap::STL::String>
+
 =head1 AUTHOR
 
 Steffen Mueller <smueller@cpan.org>
