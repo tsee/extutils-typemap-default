@@ -31,12 +31,20 @@ subclass that provides a set of mappings for C++ STL vectors.
 These are:
 
   TYPEMAP
-  std::vector<double> T_STD_VECTOR_DOUBLE
-  std::vector<double>* T_STD_VECTOR_DOUBLE_PTR
-  std::vector<int> T_STD_VECTOR_INT
-  std::vector<int>* T_STD_VECTOR_INT_PTR
-  std::vector<unsigned int> T_STD_VECTOR_UINT
-  std::vector<unsigned int>* T_STD_VECTOR_UINT_PTR
+  std::vector<double>		T_STD_VECTOR_DOUBLE
+  std::vector<double>*		T_STD_VECTOR_DOUBLE_PTR
+  
+  std::vector<int>		T_STD_VECTOR_INT
+  std::vector<int>*		T_STD_VECTOR_INT_PTR
+  
+  std::vector<unsigned int>	T_STD_VECTOR_UINT
+  std::vector<unsigned int>*	T_STD_VECTOR_UINT_PTR
+  
+  std::vector<std::string>	T_STD_VECTOR_STD_STRING
+  std::vector<std::string>*	T_STD_VECTOR_STD_STRING_PTR
+  
+  std::vector<char*>	T_STD_VECTOR_CSTRING
+  std::vector<char*>*	T_STD_VECTOR_CSTRING_PTR
 
 All of these mean that the vectors are converted to references
 to Perl arrays and vice versa.
@@ -63,8 +71,8 @@ sub new {
 	  AV* av = (AV*)SvRV($arg);
 	  const unsigned int len = av_len(av)+1;
 	  $var = std::vector<!TYPE!>(len);
+	  SV** elem;
 	  for (unsigned int i = 0; i < len; i++) {
-	    SV** elem;
 	    elem = av_fetch(av, i, 0);
 	    if (elem != NULL)
 	      $var[i] = Sv!SHORTTYPE!V(*elem);
@@ -82,8 +90,8 @@ sub new {
 	  AV* av = (AV*)SvRV($arg);
 	  const unsigned int len = av_len(av)+1;
 	  $var = new std::vector<!TYPE!>(len);
+	  SV** elem;
 	  for (unsigned int i = 0; i < len; i++) {
-	    SV** elem;
 	    elem = av_fetch(av, i, 0);
 	    if (elem != NULL)
 	      (*$var)[i] = Sv!SHORTTYPE!V(*elem);
@@ -141,6 +149,138 @@ HERE
     $input_code  .= $itmpl;
   }
 
+  # add a static part
+  $output_code .= <<'END_OUTPUT';
+T_STD_VECTOR_STD_STRING
+	AV* av = newAV();
+	$arg = newRV_noinc((SV*)av);
+	const unsigned int len = $var.size();
+	av_extend(av, len-1);
+	for (unsigned int i = 0; i < len; i++) {
+	  const std::string& str = $var[i];
+	  STRLEN len = str.length();
+	  av_store(av, i, newSVpv(str.c_str(), len));
+	}
+
+T_STD_VECTOR_STD_STRING_PTR
+	AV* av = newAV();
+	$arg = newRV_noinc((SV*)av);
+	const unsigned int len = $var->size();
+	av_extend(av, len-1);
+	for (unsigned int i = 0; i < len; i++) {
+	  const std::string& str = (*$var)[i];
+	  STRLEN len = str.length();
+	  av_store(av, i, newSVpv(str.c_str(), len));
+	}
+
+T_STD_VECTOR_CSTRING
+	AV* av = newAV();
+	$arg = newRV_noinc((SV*)av);
+	const unsigned int len = $var.size();
+	av_extend(av, len-1);
+	for (unsigned int i = 0; i < len; i++) {
+	  STRLEN len = strlen($var[i]);
+	  av_store(av, i, newSVpv($var[i], len));
+	}
+
+T_STD_VECTOR_CSTRING_PTR
+	AV* av = newAV();
+	$arg = newRV_noinc((SV*)av);
+	const unsigned int len = $var->size();
+	av_extend(av, len-1);
+	for (unsigned int i = 0; i < len; i++) {
+	  STRLEN len = strlen((*$var)[i]);
+	  av_store(av, i, newSVpv((*$var)[i], len));
+	}
+
+END_OUTPUT
+
+  # add a static part to input
+  $input_code .= <<'END_INPUT';
+T_STD_VECTOR_STD_STRING
+	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
+	  AV* av = (AV*)SvRV($arg);
+	  const unsigned int len = av_len(av)+1;
+	  $var = std::vector<std::string>(len);
+	  STRLEN len;
+	  char* tmp;
+	  SV** elem;
+	  for (unsigned int i = 0; i < len; i++) {
+	    elem = av_fetch(av, i, 0);
+	    if (elem != NULL) {
+	    tmp = SvPV(*elem, len);
+	      $var[i] = std::string(tmp, len);
+	    }
+	    else
+	      $var[i] = std::string("");
+	  }
+	}
+	else
+	  Perl_croak(aTHX_ \"%s: %s is not an array reference\",
+	             ${$ALIAS?\q[GvNAME(CvGV(cv))]:\qq[\"$pname\"]},
+	             \"$var\");
+
+T_STD_VECTOR_STD_STRING_PTR
+	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
+	  AV* av = (AV*)SvRV($arg);
+	  const unsigned int len = av_len(av)+1;
+	  $var = new std::vector<std::string>(len);
+	  STRLEN len;
+	  char* tmp;
+	  SV** elem;
+	  for (unsigned int i = 0; i < len; i++) {
+	    elem = av_fetch(av, i, 0);
+	    if (elem != NULL) {
+	      tmp = SvPV(*elem, len);
+	      (*$var)[i] = std::string(tmp, len);
+	    }
+	    else
+	      (*$var)[i] = std::string("");
+	  }
+	}
+	else
+	  Perl_croak(aTHX_ \"%s: %s is not an array reference\",
+	             ${$ALIAS?\q[GvNAME(CvGV(cv))]:\qq[\"$pname\"]},
+	             \"$var\");
+
+T_STD_VECTOR_CSTRING
+	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
+	  AV* av = (AV*)SvRV($arg);
+	  const unsigned int len = av_len(av)+1;
+	  $var = std::vector<char*>(len);
+	  SV** elem;
+	  for (unsigned int i = 0; i < len; i++) {
+	    elem = av_fetch(av, i, 0);
+	    if (elem != NULL) {
+	      $var[i] = SvPV_nolen(*elem);
+	    else
+	      $var[i] = NULL;
+	  }
+	}
+	else
+	  Perl_croak(aTHX_ \"%s: %s is not an array reference\",
+	             ${$ALIAS?\q[GvNAME(CvGV(cv))]:\qq[\"$pname\"]},
+	             \"$var\");
+
+T_STD_VECTOR_CSTRING_PTR
+	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
+	  AV* av = (AV*)SvRV($arg);
+	  const unsigned int len = av_len(av)+1;
+	  $var = new std::vector<char*>(len);
+	  SV** elem;
+	  for (unsigned int i = 0; i < len; i++) {
+	    elem = av_fetch(av, i, 0);
+	    if (elem != NULL) {
+	      (*$var)[i] = SvPV_nolen(*elem);
+	    else
+	      (*$var)[i] = NULL;
+	  }
+	}
+	else
+	  Perl_croak(aTHX_ \"%s: %s is not an array reference\",
+	             ${$ALIAS?\q[GvNAME(CvGV(cv))]:\qq[\"$pname\"]},
+	             \"$var\");
+END_INPUT
 
   my $typemap_code = <<'END_TYPEMAP';
 TYPEMAP
@@ -156,6 +296,10 @@ std::vector< unsigned int >*	T_STD_VECTOR_UINT_PTR
 std::vector<unsigned int>*	T_STD_VECTOR_UINT_PTR
 std::vector< unsigned int >	T_STD_VECTOR_UINT
 std::vector<unsigned int>	T_STD_VECTOR_UINT
+std::vector<std::string>	T_STD_VECTOR_STD_STRING
+std::vector<std::string>*	T_STD_VECTOR_STD_STRING_PTR
+std::vector<char*>	T_STD_VECTOR_CSTRING
+std::vector<char*>*	T_STD_VECTOR_CSTRING_PTR
 
 INPUT
 END_TYPEMAP
