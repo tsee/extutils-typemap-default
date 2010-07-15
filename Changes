@@ -1,5 +1,8 @@
 Revision history for Perl extension ExtUtils::Typemap::Default.
 
+0.04   Thu Jul 15 20:00:00 CEST 2010
+  - size_t is of type T_UV, not T_IV
+
 0.03   Thu Jul 15 20:00:00 CEST 2010
   - Add basic types typemap
   - Add necessary 'use' statements.
