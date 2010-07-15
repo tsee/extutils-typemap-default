@@ -1,17 +1,22 @@
 #!/usr/bin/perl -w
 
 use strict;
-use Test::More tests => 20;
+use Test::More tests => 23;
 
 use_ok( 'ExtUtils::Typemap::Default' );
 use_ok( 'ExtUtils::Typemap::STL' );
 use_ok( 'ExtUtils::Typemap::STL::String' );
 use_ok( 'ExtUtils::Typemap::STL::Vector' );
 use_ok( 'ExtUtils::Typemap::ObjectMap' );
+use_ok( 'ExtUtils::Typemap::Basic' );
 
 my $omap = ExtUtils::Typemap::ObjectMap->new();
 isa_ok($omap, 'ExtUtils::Typemap::ObjectMap');
 isa_ok($omap, 'ExtUtils::Typemap');
+
+my $bmap = ExtUtils::Typemap::Basic->new();
+isa_ok($bmap, 'ExtUtils::Typemap::Basic');
+isa_ok($bmap, 'ExtUtils::Typemap');
 
 my $smap = ExtUtils::Typemap::STL::String->new();
 isa_ok($smap, 'ExtUtils::Typemap::STL::String');
@@ -34,6 +39,7 @@ is($stl->as_string, $stlm->as_string, "manually merged STL and STL are the same"
 
 my $merged = ExtUtils::Typemap->new;
 isa_ok($merged, 'ExtUtils::Typemap');
+$merged->merge(typemap => $bmap);
 $merged->merge(typemap => $omap);
 $merged->merge(typemap => $stl);
 

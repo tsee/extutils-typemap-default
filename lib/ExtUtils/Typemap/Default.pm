@@ -8,6 +8,11 @@ our $VERSION = '0.02';
 
 our @ISA = qw(ExtUtils::Typemap);
 
+require ExtUtils::Typemap::ObjectMap;
+require ExtUtils::Typemap::Basic;
+require ExtUtils::Typemap::STL;
+
+
 =head1 NAME
 
 ExtUtils::Typemap::Default - A set of useful typemaps
@@ -33,7 +38,8 @@ perl itself provides). These default mappings are currently defined
 as the combination of the mappings provided by the
 following typemap classes which are provided in this distribution:
 
-L<ExtUtils::Typemap::ObjectMap>, L<ExtUtils::Typemap::STL>
+L<ExtUtils::Typemap::ObjectMap>, L<ExtUtils::Typemap::STL>,
+L<ExtUtils::Typemap::Basic>
 
 =head1 METHODS
 
@@ -49,6 +55,7 @@ sub new {
   my $class = shift;
 
   my $self = $class->SUPER::new(@_);
+  $self->merge(typemap => ExtUtils::Typemap::Basic->new);
   $self->merge(typemap => ExtUtils::Typemap::ObjectMap->new);
   $self->merge(typemap => ExtUtils::Typemap::STL->new);
 
@@ -61,7 +68,10 @@ __END__
 
 =head1 SEE ALSO
 
-L<ExtUtils::Typemap>, L<ExtUtils::Typemap::ObjectMap>, L<ExtUtils::Typemap::STL>
+L<ExtUtils::Typemap>,
+L<ExtUtils::Typemap::ObjectMap>,
+L<ExtUtils::Typemap::STL>,
+L<ExtUtils::Typemap::Basic>
 
 =head1 AUTHOR
 
