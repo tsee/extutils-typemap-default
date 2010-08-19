@@ -75,9 +75,9 @@ sub new {
 	  for (unsigned int i = 0; i < len; i++) {
 	    elem = av_fetch(av, i, 0);
 	    if (elem != NULL)
-	      $var[i] = Sv!SHORTTYPE!V(*elem);
+	      ${var}[i] = Sv!SHORTTYPE!V(*elem);
 	    else
-	      $var[i] = !DEFAULT!;
+	      ${var}[i] = !DEFAULT!;
 	  }
 	}
 	else
@@ -113,7 +113,7 @@ HERE
 	const unsigned int len = $var.size();
 	av_extend(av, len-1);
 	for (unsigned int i = 0; i < len; i++) {
-	  av_store(av, i, newSV!SHORTTYPELC!v($var[i]));
+	  av_store(av, i, newSV!SHORTTYPELC!v(${var}[i]));
 	}
 
 !TYPENAME!_PTR
@@ -141,7 +141,7 @@ HERE
       s/!TYPENAME!/$type[0]/g;
       s/!TYPE!/$type[1]/g;
       s/!SHORTTYPE!/$type[2]/g;
-      s/!SHORTYPELC!/$type[3]/g;
+      s/!SHORTTYPELC!/$type[3]/g;
       s/!DEFAULT!/$type[4]/g;
     }
 
@@ -157,7 +157,7 @@ T_STD_VECTOR_STD_STRING
 	const unsigned int len = $var.size();
 	av_extend(av, len-1);
 	for (unsigned int i = 0; i < len; i++) {
-	  const std::string& str = $var[i];
+	  const std::string& str = ${var}[i];
 	  STRLEN len = str.length();
 	  av_store(av, i, newSVpv(str.c_str(), len));
 	}
@@ -179,8 +179,8 @@ T_STD_VECTOR_CSTRING
 	const unsigned int len = $var.size();
 	av_extend(av, len-1);
 	for (unsigned int i = 0; i < len; i++) {
-	  STRLEN len = strlen($var[i]);
-	  av_store(av, i, newSVpv($var[i], len));
+	  STRLEN len = strlen(${var}[i]);
+	  av_store(av, i, newSVpv(${var}[i], len));
 	}
 
 T_STD_VECTOR_CSTRING_PTR
@@ -209,10 +209,10 @@ T_STD_VECTOR_STD_STRING
 	    elem = av_fetch(av, i, 0);
 	    if (elem != NULL) {
 	    tmp = SvPV(*elem, len);
-	      $var[i] = std::string(tmp, len);
+	      ${var}[i] = std::string(tmp, len);
 	    }
 	    else
-	      $var[i] = std::string("");
+	      ${var}[i] = std::string("");
 	  }
 	}
 	else
@@ -252,9 +252,9 @@ T_STD_VECTOR_CSTRING
 	  for (unsigned int i = 0; i < len; i++) {
 	    elem = av_fetch(av, i, 0);
 	    if (elem != NULL) {
-	      $var[i] = SvPV_nolen(*elem);
+	      ${var}[i] = SvPV_nolen(*elem);
 	    else
-	      $var[i] = NULL;
+	      ${var}[i] = NULL;
 	  }
 	}
 	else
