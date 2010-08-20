@@ -47,7 +47,7 @@ sub new {
   my $class = shift;
 
   my @iv_types = (qw(int short long char), "short int", "long int", "long long");
-  my @uv_types = ((map {"unsigned $_"} @iv_types), qw(unsigned Uint16 Uint32 Uint64 size_t));
+  my @uv_types = ((map {"unsigned $_"} @iv_types), qw(unsigned Uint16 Uint32 Uint64 size_t bool));
   @iv_types = map {($_, "signed $_")} @iv_types;
   push @iv_types, qw(time_t Sint16 Sint32 Sint64);
   my @nv_types = (qw(float double), "long double");
