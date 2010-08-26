@@ -200,19 +200,19 @@ END_OUTPUT
 T_STD_VECTOR_STD_STRING
 	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
 	  AV* av = (AV*)SvRV($arg);
-	  const unsigned int len = av_len(av)+1;
-	  $var = std::vector<std::string>(len);
+	  const unsigned int alen = av_len(av)+1;
+	  $var = std::vector<std::string>(alen);
 	  STRLEN len;
 	  char* tmp;
 	  SV** elem;
-	  for (unsigned int i = 0; i < len; i++) {
+	  for (unsigned int i = 0; i < alen; i++) {
 	    elem = av_fetch(av, i, 0);
 	    if (elem != NULL) {
 	    tmp = SvPV(*elem, len);
 	      ${var}[i] = std::string(tmp, len);
 	    }
 	    else
-	      ${var}[i] = std::string("");
+	      ${var}[i] = std::string(\"\");
 	  }
 	}
 	else
@@ -223,19 +223,19 @@ T_STD_VECTOR_STD_STRING
 T_STD_VECTOR_STD_STRING_PTR
 	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
 	  AV* av = (AV*)SvRV($arg);
-	  const unsigned int len = av_len(av)+1;
-	  $var = new std::vector<std::string>(len);
+	  const unsigned int alen = av_len(av)+1;
+	  $var = new std::vector<std::string>(alen);
 	  STRLEN len;
 	  char* tmp;
 	  SV** elem;
-	  for (unsigned int i = 0; i < len; i++) {
+	  for (unsigned int i = 0; i < alen; i++) {
 	    elem = av_fetch(av, i, 0);
 	    if (elem != NULL) {
 	      tmp = SvPV(*elem, len);
 	      (*$var)[i] = std::string(tmp, len);
 	    }
 	    else
-	      (*$var)[i] = std::string("");
+	      (*$var)[i] = std::string(\"\");
 	  }
 	}
 	else
