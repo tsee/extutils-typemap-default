@@ -1,5 +1,8 @@
 Revision history for Perl extension ExtUtils::Typemap::Default.
 
+0.06   Thu Aug 26 20:00:00 CEST 2010
+  - Fix various issues with vector<string> typemaps
+
 0.05   Thu Aug 19 20:00:00 CEST 2010
   - Fix typemap interpolation problems
 
