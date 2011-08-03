@@ -1,5 +1,9 @@
 Revision history for Perl extension ExtUtils::Typemaps::Default.
 
+1.00   Wed Aug  3 19:10:00 CEST 2011
+  - Rename module from ExtUtils::Typemap::Default to
+    ExtUtils::Typemaps::Default.
+
 0.06   Thu Aug 26 20:00:00 CEST 2010
   - Fix various issues with vector<string> typemaps
 
