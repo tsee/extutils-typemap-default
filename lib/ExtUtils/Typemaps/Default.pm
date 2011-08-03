@@ -1,30 +1,30 @@
-package ExtUtils::Typemap::Default;
+package ExtUtils::Typemaps::Default;
 
 use strict;
 use warnings;
-use ExtUtils::Typemap;
+use ExtUtils::Typemaps;
 
 our $VERSION = '0.06';
 
-our @ISA = qw(ExtUtils::Typemap);
+our @ISA = qw(ExtUtils::Typemaps);
 
-require ExtUtils::Typemap::ObjectMap;
-require ExtUtils::Typemap::Basic;
-require ExtUtils::Typemap::STL;
+require ExtUtils::Typemaps::ObjectMap;
+require ExtUtils::Typemaps::Basic;
+require ExtUtils::Typemaps::STL;
 
 
 =head1 NAME
 
-ExtUtils::Typemap::Default - A set of useful typemaps
+ExtUtils::Typemaps::Default - A set of useful typemaps
 
 =head1 SYNOPSIS
 
-  use ExtUtils::Typemap::Default;
+  use ExtUtils::Typemaps::Default;
   # First, read my own type maps:
-  my $private_map = ExtUtils::Typemap->new(file => 'my.map');
+  my $private_map = ExtUtils::Typemaps->new(file => 'my.map');
   
   # Then, get the default set and merge it into my maps
-  my $map = ExtUtils::Typemap::Default->new;
+  my $map = ExtUtils::Typemaps::Default->new;
   $private_map->merge(typemap => $map);
   
   # Now, write the combined map to an output file
@@ -32,14 +32,14 @@ ExtUtils::Typemap::Default - A set of useful typemaps
 
 =head1 DESCRIPTION
 
-C<ExtUtils::Typemap::Default> is an C<ExtUtils::Typemap>
+C<ExtUtils::Typemaps::Default> is an C<ExtUtils::Typemaps>
 subclass that provides a set of default mappings (in addition to what
 perl itself provides). These default mappings are currently defined
 as the combination of the mappings provided by the
 following typemap classes which are provided in this distribution:
 
-L<ExtUtils::Typemap::ObjectMap>, L<ExtUtils::Typemap::STL>,
-L<ExtUtils::Typemap::Basic>
+L<ExtUtils::Typemaps::ObjectMap>, L<ExtUtils::Typemaps::STL>,
+L<ExtUtils::Typemaps::Basic>
 
 =head1 METHODS
 
@@ -47,7 +47,7 @@ These are the overridden methods:
 
 =head2 new
 
-Creates a new C<ExtUtils::Typemap::Default> object.
+Creates a new C<ExtUtils::Typemaps::Default> object.
 
 =cut
 
@@ -55,9 +55,9 @@ sub new {
   my $class = shift;
 
   my $self = $class->SUPER::new(@_);
-  $self->merge(typemap => ExtUtils::Typemap::Basic->new);
-  $self->merge(typemap => ExtUtils::Typemap::ObjectMap->new);
-  $self->merge(typemap => ExtUtils::Typemap::STL->new);
+  $self->merge(typemap => ExtUtils::Typemaps::Basic->new);
+  $self->merge(typemap => ExtUtils::Typemaps::ObjectMap->new);
+  $self->merge(typemap => ExtUtils::Typemaps::STL->new);
 
   return $self;
 }
@@ -68,10 +68,10 @@ __END__
 
 =head1 SEE ALSO
 
-L<ExtUtils::Typemap>,
-L<ExtUtils::Typemap::ObjectMap>,
-L<ExtUtils::Typemap::STL>,
-L<ExtUtils::Typemap::Basic>
+L<ExtUtils::Typemaps>,
+L<ExtUtils::Typemaps::ObjectMap>,
+L<ExtUtils::Typemaps::STL>,
+L<ExtUtils::Typemaps::Basic>
 
 =head1 AUTHOR
 
@@ -79,7 +79,7 @@ Steffen Mueller <smueller@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2010 by Steffen Mueller
+Copyright 2010, 2011 by Steffen Mueller
 
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

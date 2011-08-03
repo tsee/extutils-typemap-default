@@ -1,32 +1,32 @@
-package ExtUtils::Typemap::ObjectMap;
+package ExtUtils::Typemaps::ObjectMap;
 
 use strict;
 use warnings;
-use ExtUtils::Typemap;
+use ExtUtils::Typemaps;
 
 our $VERSION = '0.06';
 
-our @ISA = qw(ExtUtils::Typemap);
+our @ISA = qw(ExtUtils::Typemaps);
 
 =head1 NAME
 
-ExtUtils::Typemap::ObjectMap - A set of typemaps for opaque C/C++ objects
+ExtUtils::Typemaps::ObjectMap - A set of typemaps for opaque C/C++ objects
 
 =head1 SYNOPSIS
 
-  use ExtUtils::Typemap::ObjectMap;
+  use ExtUtils::Typemaps::ObjectMap;
   # First, read my own type maps:
-  my $private_map = ExtUtils::Typemap->new(file => 'my.map');
+  my $private_map = ExtUtils::Typemaps->new(file => 'my.map');
   
   # Then, get the object map set and merge it into my maps
-  $private_map->merge(typemap => ExtUtils::Typemap::ObjectMap->new);
+  $private_map->merge(typemap => ExtUtils::Typemaps::ObjectMap->new);
   
   # Now, write the combined map to an output file
   $private_map->write(file => 'typemap');
 
 =head1 DESCRIPTION
 
-C<ExtUtils::Typemap::ObjectMap> is an C<ExtUtils::Typemap>
+C<ExtUtils::Typemaps::ObjectMap> is an C<ExtUtils::Typemaps>
 subclass that provides a set of mappings for using pointers to
 C/C++ objects as opaque objects from Perl.
 
@@ -58,8 +58,8 @@ These are the overridden methods:
 
 =head2 new
 
-Creates a new C<ExtUtils::Typemap::ObjectMap> object.
-It acts as any other C<ExtUtils::Typemap> object, except that
+Creates a new C<ExtUtils::Typemaps::ObjectMap> object.
+It acts as any other C<ExtUtils::Typemaps> object, except that
 it has the object maps initialized.
 
 =cut
@@ -186,7 +186,7 @@ __END__
 
 =head1 SEE ALSO
 
-L<ExtUtils::Typemap>, L<ExtUtils::Typemap::Default>, L<ExtUtils::Typemap::STL::String>
+L<ExtUtils::Typemaps>, L<ExtUtils::Typemaps::Default>, L<ExtUtils::Typemaps::STL::String>
 
 =head1 AUTHOR
 
@@ -195,7 +195,7 @@ but the important bit, the typemap, was written by Dean Roehrich.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2010 by Steffen Mueller
+Copyright 2010, 2011 by Steffen Mueller
 
 Except for the typemap code, which is copyright 1996 Dean Roehrich
 

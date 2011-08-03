@@ -1,32 +1,32 @@
-package ExtUtils::Typemap::STL::String;
+package ExtUtils::Typemaps::STL::String;
 
 use strict;
 use warnings;
-use ExtUtils::Typemap;
+use ExtUtils::Typemaps;
 
 our $VERSION = '0.06';
 
-our @ISA = qw(ExtUtils::Typemap);
+our @ISA = qw(ExtUtils::Typemaps);
 
 =head1 NAME
 
-ExtUtils::Typemap::STL::String - A set of typemaps for STL std::strings
+ExtUtils::Typemaps::STL::String - A set of typemaps for STL std::strings
 
 =head1 SYNOPSIS
 
-  use ExtUtils::Typemap::STL::String;
+  use ExtUtils::Typemaps::STL::String;
   # First, read my own type maps:
-  my $private_map = ExtUtils::Typemap->new(file => 'my.map');
+  my $private_map = ExtUtils::Typemaps->new(file => 'my.map');
   
   # Then, get the object map set and merge it into my maps
-  $private_map->merge(typemap => ExtUtils::Typemap::STL::String->new);
+  $private_map->merge(typemap => ExtUtils::Typemaps::STL::String->new);
   
   # Now, write the combined map to an output file
   $private_map->write(file => 'typemap');
 
 =head1 DESCRIPTION
 
-C<ExtUtils::Typemap::STL::String> is an C<ExtUtils::Typemap>
+C<ExtUtils::Typemaps::STL::String> is an C<ExtUtils::Typemaps>
 subclass that provides a set of mappings for C++ STL strings.
 These are:
 
@@ -54,8 +54,8 @@ These are the overridden methods:
 
 =head2 new
 
-Creates a new C<ExtUtils::Typemap::STL::String> object.
-It acts as any other C<ExtUtils::Typemap> object, except that
+Creates a new C<ExtUtils::Typemaps::STL::String> object.
+It acts as any other C<ExtUtils::Typemaps> object, except that
 it has the string type maps initialized.
 
 =cut
@@ -93,7 +93,7 @@ __END__
 
 =head1 SEE ALSO
 
-L<ExtUtils::Typemap>, L<ExtUtils::Typemap::Default>, L<ExtUtils::Typemap::ObjectMap>
+L<ExtUtils::Typemaps>, L<ExtUtils::Typemaps::Default>, L<ExtUtils::Typemaps::ObjectMap>
 
 =head1 AUTHOR
 
@@ -101,7 +101,7 @@ Steffen Mueller <smueller@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2010 by Steffen Mueller
+Copyright 2010, 2011 by Steffen Mueller
 
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

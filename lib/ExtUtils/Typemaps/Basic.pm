@@ -1,32 +1,32 @@
-package ExtUtils::Typemap::Basic;
+package ExtUtils::Typemaps::Basic;
 
 use strict;
 use warnings;
-use ExtUtils::Typemap;
+use ExtUtils::Typemaps;
 
 our $VERSION = '0.06';
 
-our @ISA = qw(ExtUtils::Typemap);
+our @ISA = qw(ExtUtils::Typemaps);
 
 =head1 NAME
 
-ExtUtils::Typemap::Basic - A set of typemaps for simple types
+ExtUtils::Typemaps::Basic - A set of typemaps for simple types
 
 =head1 SYNOPSIS
 
-  use ExtUtils::Typemap::Basic;
+  use ExtUtils::Typemaps::Basic;
   # First, read my own type maps:
-  my $private_map = ExtUtils::Typemap->new(file => 'my.map');
+  my $private_map = ExtUtils::Typemaps->new(file => 'my.map');
   
   # Then, get additional typemaps and merge them into mine
-  $private_map->merge(typemap => ExtUtils::Typemap::Basic->new);
+  $private_map->merge(typemap => ExtUtils::Typemaps::Basic->new);
   
   # Now, write the combined map to an output file
   $private_map->write(file => 'typemap');
 
 =head1 DESCRIPTION
 
-C<ExtUtils::Typemap::Basic> is an C<ExtUtils::Typemap>
+C<ExtUtils::Typemaps::Basic> is an C<ExtUtils::Typemaps>
 subclass that provides a set of mappings for some basic
 integer, unsigned, and floating point types that aren't
 in perl's builtin typemap.
@@ -37,8 +37,8 @@ These are the overridden methods:
 
 =head2 new
 
-Creates a new C<ExtUtils::Typemap::Basic> object.
-It acts as any other C<ExtUtils::Typemap> object, except that
+Creates a new C<ExtUtils::Typemaps::Basic> object.
+It acts as any other C<ExtUtils::Typemaps> object, except that
 it has the object maps initialized.
 
 =cut
@@ -73,7 +73,7 @@ __END__
 
 =head1 SEE ALSO
 
-L<ExtUtils::Typemap>, L<ExtUtils::Typemap::Default>
+L<ExtUtils::Typemaps>, L<ExtUtils::Typemaps::Default>
 
 =head1 AUTHOR
 
@@ -81,7 +81,7 @@ Steffen Mueller <smueller@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2010 by Steffen Mueller
+Copyright 2010, 2011 by Steffen Mueller
 
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
