@@ -4,8 +4,8 @@ Build
 Build.bat
 MANIFEST
 MANIFEST.bak
-META.yml
-MYMETA.yml
+META.*
+MYMETA.*
 *.def
 *.pdb
 *.lib
