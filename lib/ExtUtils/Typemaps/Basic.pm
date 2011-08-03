@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use ExtUtils::Typemaps;
 
-our $VERSION = '0.06';
+our $VERSION = '1.00';
 
 our @ISA = qw(ExtUtils::Typemaps);
 
