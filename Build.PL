@@ -4,10 +4,10 @@ use strict;
 use Module::Build;
 
 my $build = Module::Build->new(
-  module_name    => 'ExtUtils::Typemap::Default',
+  module_name    => 'ExtUtils::Typemaps::Default',
   license        => 'perl',
   requires       => {
-    'ExtUtils::Typemap' => '0.05',
+    'ExtUtils::Typemaps' => '1.00',
   },
   build_requires => {
     'Module::Build' => '0',

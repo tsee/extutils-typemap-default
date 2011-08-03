@@ -69,6 +69,6 @@
 \bbuild.com$
 
 # Avoid archives of this distribution
-\bExtUtils-Typemap-Default-[\d\.\_]+
+\bExtUtils-Typemaps?-Default-[\d\.\_]+
 
 # Ignore test byproducts
