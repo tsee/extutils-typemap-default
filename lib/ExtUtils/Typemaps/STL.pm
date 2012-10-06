@@ -68,7 +68,7 @@ __END__
 L<ExtUtils::Typemaps>, L<ExtUtils::Typemaps::Default>
 
 L<ExtUtils::Typemaps::STL::String>,
-L<ExtUtils::Typemaps::STL::Vector
+L<ExtUtils::Typemaps::STL::Vector>
 
 =head1 AUTHOR
 
