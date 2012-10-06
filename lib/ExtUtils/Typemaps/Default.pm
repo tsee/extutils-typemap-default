@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use ExtUtils::Typemaps;
 
-our $VERSION = '1.00';
+our $VERSION = '1.01';
 
 our @ISA = qw(ExtUtils::Typemaps);
 
@@ -79,7 +79,7 @@ Steffen Mueller <smueller@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2010, 2011 by Steffen Mueller
+Copyright 2010, 2011, 2012 by Steffen Mueller
 
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
