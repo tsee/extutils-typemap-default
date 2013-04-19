@@ -1,5 +1,9 @@
 Revision history for Perl extension ExtUtils::Typemaps::Default.
 
+1.02   Fri Apr 19 18:38:00 CEST 2013
+  - Require new-enough ExtUtils::Typemaps for template
+    type canonicalization (sort of).
+
 1.01   Sat Oct  6 11:40:00 CEST 2012
   - POD fix
 
