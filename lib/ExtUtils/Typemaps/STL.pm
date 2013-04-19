@@ -6,7 +6,7 @@ use ExtUtils::Typemaps;
 use ExtUtils::Typemaps::STL::Vector;
 use ExtUtils::Typemaps::STL::String;
 
-our $VERSION = '1.01';
+our $VERSION = '1.02';
 
 our @ISA = qw(ExtUtils::Typemaps);
 
