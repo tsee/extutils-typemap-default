@@ -284,17 +284,11 @@ END_INPUT
 
   my $typemap_code = <<'END_TYPEMAP';
 TYPEMAP
-std::vector< double >*	T_STD_VECTOR_DOUBLE_PTR
 std::vector<double>*	T_STD_VECTOR_DOUBLE_PTR
-std::vector< double >	T_STD_VECTOR_DOUBLE
 std::vector<double>	T_STD_VECTOR_DOUBLE
-std::vector< int >*	T_STD_VECTOR_INT_PTR
 std::vector<int>*	T_STD_VECTOR_INT_PTR
-std::vector< int >	T_STD_VECTOR_INT
 std::vector<int>	T_STD_VECTOR_INT
-std::vector< unsigned int >*	T_STD_VECTOR_UINT_PTR
 std::vector<unsigned int>*	T_STD_VECTOR_UINT_PTR
-std::vector< unsigned int >	T_STD_VECTOR_UINT
 std::vector<unsigned int>	T_STD_VECTOR_UINT
 std::vector<std::string>	T_STD_VECTOR_STD_STRING
 std::vector<std::string>*	T_STD_VECTOR_STD_STRING_PTR
