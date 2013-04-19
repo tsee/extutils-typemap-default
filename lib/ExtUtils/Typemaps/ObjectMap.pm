@@ -195,7 +195,7 @@ but the important bit, the typemap, was written by Dean Roehrich.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2010, 2011 by Steffen Mueller
+Copyright 2010, 2011, 2012, 2013 by Steffen Mueller
 
 Except for the typemap code, which is copyright 1996 Dean Roehrich
 
