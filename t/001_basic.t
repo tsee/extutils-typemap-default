@@ -1,14 +1,15 @@
 #!/usr/bin/perl -w
 
 use strict;
-use Test::More tests => 23;
+use Test::More tests => 26;
 
-use_ok( 'ExtUtils::Typemaps::Default' );
-use_ok( 'ExtUtils::Typemaps::STL' );
 use_ok( 'ExtUtils::Typemaps::STL::String' );
 use_ok( 'ExtUtils::Typemaps::STL::Vector' );
+use_ok( 'ExtUtils::Typemaps::STL::List' );
 use_ok( 'ExtUtils::Typemaps::ObjectMap' );
 use_ok( 'ExtUtils::Typemaps::Basic' );
+use_ok( 'ExtUtils::Typemaps::STL' );
+use_ok( 'ExtUtils::Typemaps::Default' );
 
 my $omap = ExtUtils::Typemaps::ObjectMap->new();
 isa_ok($omap, 'ExtUtils::Typemaps::ObjectMap');
@@ -26,6 +27,10 @@ my $vmap = ExtUtils::Typemaps::STL::Vector->new();
 isa_ok($vmap, 'ExtUtils::Typemaps::STL::Vector');
 isa_ok($vmap, 'ExtUtils::Typemaps');
 
+my $lmap = ExtUtils::Typemaps::STL::List->new();
+isa_ok($lmap, 'ExtUtils::Typemaps::STL::List');
+isa_ok($lmap, 'ExtUtils::Typemaps');
+
 my $stl = ExtUtils::Typemaps::STL->new;
 isa_ok($stl, 'ExtUtils::Typemaps');
 
@@ -33,6 +38,7 @@ my $stlm = ExtUtils::Typemaps->new;
 isa_ok($stlm, 'ExtUtils::Typemaps');
 $stlm->merge(typemap => $smap);
 $stlm->merge(typemap => $vmap);
+$stlm->merge(typemap => $lmap);
 
 ok($stl->as_string =~ /\S/);
 is($stl->as_string, $stlm->as_string, "manually merged STL and STL are the same");

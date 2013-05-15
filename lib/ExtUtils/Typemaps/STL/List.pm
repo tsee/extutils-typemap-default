@@ -1,4 +1,4 @@
-package ExtUtils::Typemaps::STL::Vector;
+package ExtUtils::Typemaps::STL::List;
 
 use strict;
 use warnings;
@@ -10,43 +10,43 @@ our @ISA = qw(ExtUtils::Typemaps);
 
 =head1 NAME
 
-ExtUtils::Typemaps::STL::Vector - A set of typemaps for STL std::vectors
+ExtUtils::Typemaps::STL::List - A set of typemaps for STL std::lists
 
 =head1 SYNOPSIS
 
-  use ExtUtils::Typemaps::STL::Vector;
+  use ExtUtils::Typemaps::STL::List;
   # First, read my own type maps:
   my $private_map = ExtUtils::Typemaps->new(file => 'my.map');
   
   # Then, get the object map set and merge it into my maps
-  $private_map->merge(typemap => ExtUtils::Typemaps::STL::Vector->new);
+  $private_map->merge(typemap => ExtUtils::Typemaps::STL::List->new);
   
   # Now, write the combined map to an output file
   $private_map->write(file => 'typemap');
 
 =head1 DESCRIPTION
 
-C<ExtUtils::Typemaps::STL::Vector> is an C<ExtUtils::Typemaps>
-subclass that provides a set of mappings for C++ STL vectors.
+C<ExtUtils::Typemaps::STL::List> is an C<ExtUtils::Typemaps>
+subclass that provides a set of mappings for C++ STL lists.
 These are:
 
   TYPEMAP
-  std::vector<double>		T_STD_VECTOR_DOUBLE
-  std::vector<double>*		T_STD_VECTOR_DOUBLE_PTR
+  std::list<double>		T_STD_LIST_DOUBLE
+  std::list<double>*		T_STD_LIST_DOUBLE_PTR
   
-  std::vector<int>		T_STD_VECTOR_INT
-  std::vector<int>*		T_STD_VECTOR_INT_PTR
+  std::list<int>		T_STD_LIST_INT
+  std::list<int>*		T_STD_LIST_INT_PTR
   
-  std::vector<unsigned int>	T_STD_VECTOR_UINT
-  std::vector<unsigned int>*	T_STD_VECTOR_UINT_PTR
+  std::list<unsigned int>	T_STD_LIST_UINT
+  std::list<unsigned int>*	T_STD_LIST_UINT_PTR
   
-  std::vector<std::string>	T_STD_VECTOR_STD_STRING
-  std::vector<std::string>*	T_STD_VECTOR_STD_STRING_PTR
+  std::list<std::string>	T_STD_LIST_STD_STRING
+  std::list<std::string>*	T_STD_LIST_STD_STRING_PTR
   
-  std::vector<char*>	T_STD_VECTOR_CSTRING
-  std::vector<char*>*	T_STD_VECTOR_CSTRING_PTR
+  std::list<char*>		T_STD_LIST_CSTRING
+  std::list<char*>*		T_STD_LIST_CSTRING_PTR
 
-All of these mean that the vectors are converted to references
+All of these mean that the lists are converted to references
 to Perl arrays and vice versa.
 
 =head1 METHODS
@@ -55,9 +55,9 @@ These are the overridden methods:
 
 =head2 new
 
-Creates a new C<ExtUtils::Typemaps::STL::Vector> object.
+Creates a new C<ExtUtils::Typemaps::STL::List> object.
 It acts as any other C<ExtUtils::Typemaps> object, except that
-it has the vector type maps initialized.
+it has the list type maps initialized.
 
 =cut
 
@@ -70,14 +70,14 @@ sub new {
 	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
 	  AV* av = (AV*)SvRV($arg);
 	  const unsigned int len = av_len(av)+1;
-	  $var = std::vector<!TYPE!>(len);
+	  $var = std::list<!TYPE!>();
 	  SV** elem;
 	  for (unsigned int i = 0; i < len; i++) {
 	    elem = av_fetch(av, i, 0);
 	    if (elem != NULL)
-	      ${var}[i] = Sv!SHORTTYPE!V(*elem);
+	      ${var}.push_back(Sv!SHORTTYPE!V(*elem));
 	    else
-	      ${var}[i] = !DEFAULT!;
+	      ${var}[i].push_back(!DEFAULT!);
 	  }
 	}
 	else
@@ -89,14 +89,14 @@ sub new {
 	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
 	  AV* av = (AV*)SvRV($arg);
 	  const unsigned int len = av_len(av)+1;
-	  $var = new std::vector<!TYPE!>(len);
+	  $var = new std::list<!TYPE!>();
 	  SV** elem;
 	  for (unsigned int i = 0; i < len; i++) {
 	    elem = av_fetch(av, i, 0);
 	    if (elem != NULL)
-	      (*$var)[i] = Sv!SHORTTYPE!V(*elem);
+	      (*$var).push_back(Sv!SHORTTYPE!V(*elem));
 	    else
-	      (*$var)[i] = 0.;
+	      (*$var).push_back(!DEFAULT!);
 	  }
 	}
 	else
@@ -110,28 +110,34 @@ HERE
 !TYPENAME!
 	AV* av = newAV();
 	$arg = newRV_noinc((SV*)av);
-	const unsigned int len = $var.size();
+	const unsigned int len = $var.size(); // Technically may be linear...
 	av_extend(av, len-1);
-	for (unsigned int i = 0; i < len; i++) {
-	  av_store(av, i, newSV!SHORTTYPELC!v(${var}[i]));
+	unsigend int i = 0;
+	std::list<!TYPE!>::const_iterator lend = $var.cend();
+	std::list<!TYPE!>::const_iterator lit  = $var.cbegin();
+	for (; lit != lend; ++lit) {
+	  av_store(av, i++, newSV!SHORTTYPELC!v(*lit));
 	}
 
 !TYPENAME!_PTR
 	AV* av = newAV();
 	$arg = newRV_noinc((SV*)av);
-	const unsigned int len = $var->size();
+	const unsigned int len = $var->size(); // Technically may be linear...
 	av_extend(av, len-1);
-	for (unsigned int i = 0; i < len; i++) {
-	  av_store(av, i, newSV!SHORTTYPELC!v((*$var)[i]));
+	unsigend int i = 0;
+	std::list<!TYPE!>::const_iterator lend = (*$var).cend();
+	std::list<!TYPE!>::const_iterator lit  = (*$var).cbegin();
+	for (; lit != lend; ++lit) {
+	  av_store(av, i++, newSV!SHORTTYPELC!v(*lit));
 	}
 
 HERE
 
   my ($output_code, $input_code);
   # TYPENAME, TYPE, SHORTTYPE, SHORTTYPELC, DEFAULT
-  foreach my $type ([qw(T_STD_VECTOR_DOUBLE double N n 0.)],
-                    [qw(T_STD_VECTOR_INT int I i 0)],
-                    [qw(T_STD_VECTOR_UINT), "unsigned int", qw(U u 0)])
+  foreach my $type ([qw(T_STD_LIST_DOUBLE double N n 0.)],
+                    [qw(T_STD_LIST_INT int I i 0)],
+                    [qw(T_STD_LIST_UINT), "unsigned int", qw(U u 0)])
   {
     my @type = @$type;
     my $otmpl = $output_tmpl;
@@ -151,80 +157,67 @@ HERE
 
   # add a static part
   $output_code .= <<'END_OUTPUT';
-T_STD_VECTOR_STD_STRING
+T_STD_LIST_STD_STRING
+	AV* av = newAV();
+	$arg = newRV_noinc((SV*)av);
+	const unsigned int len = $var.size(); // Technically may be linear...
+	av_extend(av, len-1);
+	unsigend int i = 0;
+	std::list<std::string>::const_iterator lend = $var.cend();
+	std::list<std::string>::const_iterator lit  = $var.cbegin();
+	for (; lit != lend; ++lit) {
+	  const std::string& str = *lit;
+	  STRLEN len = str.length();
+	  av_store(av, i++, newSVpv(str.c_str(), len));
+	}
+
+T_STD_LIST_STD_STRING_PTR
+	AV* av = newAV();
+	$arg = newRV_noinc((SV*)av);
+	const unsigned int len = $var->size(); // Technically may be linear...
+	av_extend(av, len-1);
+	unsigend int i = 0;
+	std::list<std::string>::const_iterator lend = (*$var).cend();
+	std::list<std::string>::const_iterator lit  = (*$var).cbegin();
+	for (; lit != lend; ++lit) {
+	  const std::string& str = *lit;
+	  STRLEN len = str.length();
+	  av_store(av, i++, newSVpv(str.c_str(), len));
+	}
+
+T_STD_LIST_CSTRING
 	AV* av = newAV();
 	$arg = newRV_noinc((SV*)av);
 	const unsigned int len = $var.size();
 	av_extend(av, len-1);
-	for (unsigned int i = 0; i < len; i++) {
-	  const std::string& str = ${var}[i];
-	  STRLEN len = str.length();
-	  av_store(av, i, newSVpv(str.c_str(), len));
+	unsigend int i = 0;
+	std::list<char *>::const_iterator lend = $var.cend();
+	std::list<char *>::const_iterator lit  = $var.cbegin();
+	for (; lit != lend; ++lit) {
+	  av_store(av, i, newSVpv(*lit, (STRLEN)strlen(*lit)));
 	}
 
-T_STD_VECTOR_STD_STRING_PTR
+T_STD_LIST_CSTRING_PTR
 	AV* av = newAV();
 	$arg = newRV_noinc((SV*)av);
 	const unsigned int len = $var->size();
 	av_extend(av, len-1);
-	for (unsigned int i = 0; i < len; i++) {
-	  const std::string& str = (*$var)[i];
-	  STRLEN len = str.length();
-	  av_store(av, i, newSVpv(str.c_str(), len));
-	}
-
-T_STD_VECTOR_CSTRING
-	AV* av = newAV();
-	$arg = newRV_noinc((SV*)av);
-	const unsigned int len = $var.size();
-	av_extend(av, len-1);
-	for (unsigned int i = 0; i < len; i++) {
-	  STRLEN len = strlen(${var}[i]);
-	  av_store(av, i, newSVpv(${var}[i], len));
-	}
-
-T_STD_VECTOR_CSTRING_PTR
-	AV* av = newAV();
-	$arg = newRV_noinc((SV*)av);
-	const unsigned int len = $var->size();
-	av_extend(av, len-1);
-	for (unsigned int i = 0; i < len; i++) {
-	  STRLEN len = strlen((*$var)[i]);
-	  av_store(av, i, newSVpv((*$var)[i], len));
+	unsigend int i = 0;
+	std::list<char *>::const_iterator lend = (*$var).cend();
+	std::list<char *>::const_iterator lit  = (*$var).cbegin();
+	for (; lit != lend; ++lit) {
+	  av_store(av, i, newSVpv(*lit, (STRLEN)strlen(*lit)));
 	}
 
 END_OUTPUT
 
   # add a static part to input
   $input_code .= <<'END_INPUT';
-T_STD_VECTOR_STD_STRING
+T_STD_LIST_STD_STRING
 	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
 	  AV* av = (AV*)SvRV($arg);
 	  const unsigned int alen = av_len(av)+1;
-	  $var = std::vector<std::string>(alen);
-	  STRLEN len;
-	  char* tmp;
-	  SV** elem;
-	  for (unsigned int i = 0; i < alen; i++) {
-	    elem = av_fetch(av, i, 0);
-	    if (elem != NULL) {
-	    tmp = SvPV(*elem, len);
-	      ${var}[i] = std::string(tmp, len);
-	    }
-	    else
-	      ${var}[i] = std::string(\"\");
-	  }
-	}
-	else
-	  Perl_croak(aTHX_ \"%s: %s is not an array reference\",
-	             ${$ALIAS?\q[GvNAME(CvGV(cv))]:\qq[\"$pname\"]},
-	             \"$var\");
-
-T_STD_VECTOR_STD_STRING_PTR
-	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
-	  AV* av = (AV*)SvRV($arg);
-	  const unsigned int alen = av_len(av)+1;
-	  $var = new std::vector<std::string>(alen);
+	  $var = std::list<std::string>();
 	  STRLEN len;
 	  char* tmp;
 	  SV** elem;
@@ -232,10 +225,10 @@ T_STD_VECTOR_STD_STRING_PTR
 	    elem = av_fetch(av, i, 0);
 	    if (elem != NULL) {
 	      tmp = SvPV(*elem, len);
-	      (*$var)[i] = std::string(tmp, len);
+	      ${var}.push_back(std::string(tmp, len));
 	    }
 	    else
-	      (*$var)[i] = std::string(\"\");
+	      ${var}.push_back(std::string(\"\"));
 	  }
 	}
 	else
@@ -243,18 +236,22 @@ T_STD_VECTOR_STD_STRING_PTR
 	             ${$ALIAS?\q[GvNAME(CvGV(cv))]:\qq[\"$pname\"]},
 	             \"$var\");
 
-T_STD_VECTOR_CSTRING
+T_STD_LIST_STD_STRING_PTR
 	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
 	  AV* av = (AV*)SvRV($arg);
-	  const unsigned int len = av_len(av)+1;
-	  $var = std::vector<char*>(len);
+	  const unsigned int alen = av_len(av)+1;
+	  $var = new std::list<std::string>(alen);
+	  STRLEN len;
+	  char* tmp;
 	  SV** elem;
-	  for (unsigned int i = 0; i < len; i++) {
+	  for (unsigned int i = 0; i < alen; i++) {
 	    elem = av_fetch(av, i, 0);
 	    if (elem != NULL) {
-	      ${var}[i] = SvPV_nolen(*elem);
+	      tmp = SvPV(*elem, len);
+	      (*$var).push_back(std::string(tmp, len));
+	    }
 	    else
-	      ${var}[i] = NULL;
+	      (*$var).push_back(std::string(\"\"));
 	  }
 	}
 	else
@@ -262,18 +259,37 @@ T_STD_VECTOR_CSTRING
 	             ${$ALIAS?\q[GvNAME(CvGV(cv))]:\qq[\"$pname\"]},
 	             \"$var\");
 
-T_STD_VECTOR_CSTRING_PTR
+T_STD_LIST_CSTRING
 	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
 	  AV* av = (AV*)SvRV($arg);
 	  const unsigned int len = av_len(av)+1;
-	  $var = new std::vector<char*>(len);
+	  $var = std::list<char*>();
 	  SV** elem;
 	  for (unsigned int i = 0; i < len; i++) {
 	    elem = av_fetch(av, i, 0);
 	    if (elem != NULL) {
-	      (*$var)[i] = SvPV_nolen(*elem);
+	      ${var}.push_back(SvPV_nolen(*elem));
 	    else
-	      (*$var)[i] = NULL;
+	      ${var}.push_back(NULL);
+	  }
+	}
+	else
+	  Perl_croak(aTHX_ \"%s: %s is not an array reference\",
+	             ${$ALIAS?\q[GvNAME(CvGV(cv))]:\qq[\"$pname\"]},
+	             \"$var\");
+
+T_STD_LIST_CSTRING_PTR
+	if (SvROK($arg) && SvTYPE(SvRV($arg))==SVt_PVAV) {
+	  AV* av = (AV*)SvRV($arg);
+	  const unsigned int len = av_len(av)+1;
+	  $var = new std::list<char*>();
+	  SV** elem;
+	  for (unsigned int i = 0; i < len; i++) {
+	    elem = av_fetch(av, i, 0);
+	    if (elem != NULL) {
+	      (*$var).push_back(SvPV_nolen(*elem));
+	    else
+	      (*$var).push_back(NULL);
 	  }
 	}
 	else
@@ -284,16 +300,30 @@ END_INPUT
 
   my $typemap_code = <<'END_TYPEMAP';
 TYPEMAP
-std::vector<double>*	T_STD_VECTOR_DOUBLE_PTR
-std::vector<double>	T_STD_VECTOR_DOUBLE
-std::vector<int>*	T_STD_VECTOR_INT_PTR
-std::vector<int>	T_STD_VECTOR_INT
-std::vector<unsigned int>*	T_STD_VECTOR_UINT_PTR
-std::vector<unsigned int>	T_STD_VECTOR_UINT
-std::vector<std::string>	T_STD_VECTOR_STD_STRING
-std::vector<std::string>*	T_STD_VECTOR_STD_STRING_PTR
-std::vector<char*>	T_STD_VECTOR_CSTRING
-std::vector<char*>*	T_STD_VECTOR_CSTRING_PTR
+std::list<double>*		T_STD_LIST_DOUBLE_PTR
+std::list<double>		T_STD_LIST_DOUBLE
+std::list<int>*			T_STD_LIST_INT_PTR
+std::list<int>			T_STD_LIST_INT
+std::list<unsigned int>*	T_STD_LIST_UINT_PTR
+std::list<unsigned int>		T_STD_LIST_UINT
+std::list<std::string>		T_STD_LIST_STD_STRING
+std::list<std::string>*		T_STD_LIST_STD_STRING_PTR
+std::list<string>		T_STD_LIST_STD_STRING
+std::list<string>*		T_STD_LIST_STD_STRING_PTR
+std::list<char*>		T_STD_LIST_CSTRING
+std::list<char*>*		T_STD_LIST_CSTRING_PTR
+list<double>*			T_STD_LIST_DOUBLE_PTR
+list<double>			T_STD_LIST_DOUBLE
+list<int>*			T_STD_LIST_INT_PTR
+list<int>			T_STD_LIST_INT
+list<unsigned int>*		T_STD_LIST_UINT_PTR
+list<unsigned int>		T_STD_LIST_UINT
+list<std::string>		T_STD_LIST_STD_STRING
+list<std::string>*		T_STD_LIST_STD_STRING_PTR
+list<string>			T_STD_LIST_STD_STRING
+list<string>*			T_STD_LIST_STD_STRING_PTR
+list<char*>			T_STD_LIST_CSTRING
+list<char*>*			T_STD_LIST_CSTRING_PTR
 
 INPUT
 END_TYPEMAP
@@ -314,7 +344,7 @@ __END__
 =head1 SEE ALSO
 
 L<ExtUtils::Typemaps>, L<ExtUtils::Typemaps::Default>, L<ExtUtils::Typemaps::ObjectMap>,
-L<ExtUtils::Typemaps::STL>, L<ExtUtils::Typemaps::STL::String>
+L<ExtUtils::Typemaps::STL>, L<ExtUtils::Typemaps::STL::String>, L<ExtUtils::Typemaps::STL::Vector>
 
 =head1 AUTHOR
 
@@ -322,7 +352,7 @@ Steffen Mueller <smueller@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2010, 2011, 2012, 2013 by Steffen Mueller
+Copyright 2013 by Steffen Mueller
 
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
