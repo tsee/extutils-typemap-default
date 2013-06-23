@@ -112,7 +112,7 @@ HERE
 	$arg = newRV_noinc((SV*)av);
 	const unsigned int len = $var.size(); // Technically may be linear...
 	av_extend(av, len-1);
-	unsigend int i = 0;
+	unsigned int i = 0;
 	std::list<!TYPE!>::const_iterator lend = $var.cend();
 	std::list<!TYPE!>::const_iterator lit  = $var.cbegin();
 	for (; lit != lend; ++lit) {
@@ -124,7 +124,7 @@ HERE
 	$arg = newRV_noinc((SV*)av);
 	const unsigned int len = $var->size(); // Technically may be linear...
 	av_extend(av, len-1);
-	unsigend int i = 0;
+	unsigned int i = 0;
 	std::list<!TYPE!>::const_iterator lend = (*$var).cend();
 	std::list<!TYPE!>::const_iterator lit  = (*$var).cbegin();
 	for (; lit != lend; ++lit) {
@@ -162,7 +162,7 @@ T_STD_LIST_STD_STRING
 	$arg = newRV_noinc((SV*)av);
 	const unsigned int len = $var.size(); // Technically may be linear...
 	av_extend(av, len-1);
-	unsigend int i = 0;
+	unsigned int i = 0;
 	std::list<std::string>::const_iterator lend = $var.cend();
 	std::list<std::string>::const_iterator lit  = $var.cbegin();
 	for (; lit != lend; ++lit) {
@@ -176,7 +176,7 @@ T_STD_LIST_STD_STRING_PTR
 	$arg = newRV_noinc((SV*)av);
 	const unsigned int len = $var->size(); // Technically may be linear...
 	av_extend(av, len-1);
-	unsigend int i = 0;
+	unsigned int i = 0;
 	std::list<std::string>::const_iterator lend = (*$var).cend();
 	std::list<std::string>::const_iterator lit  = (*$var).cbegin();
 	for (; lit != lend; ++lit) {
@@ -190,7 +190,7 @@ T_STD_LIST_CSTRING
 	$arg = newRV_noinc((SV*)av);
 	const unsigned int len = $var.size();
 	av_extend(av, len-1);
-	unsigend int i = 0;
+	unsigned int i = 0;
 	std::list<char *>::const_iterator lend = $var.cend();
 	std::list<char *>::const_iterator lit  = $var.cbegin();
 	for (; lit != lend; ++lit) {
@@ -202,7 +202,7 @@ T_STD_LIST_CSTRING_PTR
 	$arg = newRV_noinc((SV*)av);
 	const unsigned int len = $var->size();
 	av_extend(av, len-1);
-	unsigend int i = 0;
+	unsigned int i = 0;
 	std::list<char *>::const_iterator lend = (*$var).cend();
 	std::list<char *>::const_iterator lit  = (*$var).cbegin();
 	for (; lit != lend; ++lit) {
