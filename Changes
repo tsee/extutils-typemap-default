@@ -1,5 +1,8 @@
 Revision history for Perl extension ExtUtils::Typemaps::Default.
 
+1.04   Sun Jun 23 18:11:00 CEST 2013
+  - Fix typoes in stl::list typemaps.
+
 1.03   Wed May 15 07:54:00 CEST 2013
   - Implement some stl::list typemaps.
 
