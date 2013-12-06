@@ -1,5 +1,9 @@
 Revision history for Perl extension ExtUtils::Typemaps::Default.
 
+1.05   Fri Dec  6 18:43:00 CET 2013
+  - Fix invalid av_extend on zero-length vectors.
+    (James Wright, RT #91213)
+
 1.04   Sun Jun 23 18:11:00 CEST 2013
   - Fix typoes in stl::list typemaps.
 
