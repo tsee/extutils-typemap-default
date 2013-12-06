@@ -111,7 +111,8 @@ HERE
 	AV* av = newAV();
 	$arg = newRV_noinc((SV*)av);
 	const unsigned int len = $var.size();
-	av_extend(av, len-1);
+        if (len)
+          av_extend(av, len-1);
 	for (unsigned int i = 0; i < len; i++) {
 	  av_store(av, i, newSV!SHORTTYPELC!v(${var}[i]));
 	}
@@ -120,7 +121,8 @@ HERE
 	AV* av = newAV();
 	$arg = newRV_noinc((SV*)av);
 	const unsigned int len = $var->size();
-	av_extend(av, len-1);
+        if (len)
+          av_extend(av, len-1);
 	for (unsigned int i = 0; i < len; i++) {
 	  av_store(av, i, newSV!SHORTTYPELC!v((*$var)[i]));
 	}
@@ -155,7 +157,8 @@ T_STD_VECTOR_STD_STRING
 	AV* av = newAV();
 	$arg = newRV_noinc((SV*)av);
 	const unsigned int len = $var.size();
-	av_extend(av, len-1);
+        if (len)
+          av_extend(av, len-1);
 	for (unsigned int i = 0; i < len; i++) {
 	  const std::string& str = ${var}[i];
 	  STRLEN len = str.length();
@@ -166,7 +169,8 @@ T_STD_VECTOR_STD_STRING_PTR
 	AV* av = newAV();
 	$arg = newRV_noinc((SV*)av);
 	const unsigned int len = $var->size();
-	av_extend(av, len-1);
+        if (len)
+          av_extend(av, len-1);
 	for (unsigned int i = 0; i < len; i++) {
 	  const std::string& str = (*$var)[i];
 	  STRLEN len = str.length();
@@ -177,7 +181,8 @@ T_STD_VECTOR_CSTRING
 	AV* av = newAV();
 	$arg = newRV_noinc((SV*)av);
 	const unsigned int len = $var.size();
-	av_extend(av, len-1);
+        if (len)
+          av_extend(av, len-1);
 	for (unsigned int i = 0; i < len; i++) {
 	  STRLEN len = strlen(${var}[i]);
 	  av_store(av, i, newSVpv(${var}[i], len));
@@ -187,7 +192,8 @@ T_STD_VECTOR_CSTRING_PTR
 	AV* av = newAV();
 	$arg = newRV_noinc((SV*)av);
 	const unsigned int len = $var->size();
-	av_extend(av, len-1);
+        if (len)
+          av_extend(av, len-1);
 	for (unsigned int i = 0; i < len; i++) {
 	  STRLEN len = strlen((*$var)[i]);
 	  av_store(av, i, newSVpv((*$var)[i], len));
