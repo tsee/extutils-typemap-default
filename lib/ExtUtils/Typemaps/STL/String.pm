@@ -69,12 +69,15 @@ TYPEMAP
 std::string   T_STD_STRING
 std::string*  T_STD_STRING_PTR
 
-INPUT
 T_STD_STRING
-    $var = std::string( SvPV_nolen( $arg ), SvCUR( $arg ) );
+      size_t len;
+      const char * c = SvPV($arg, len);
+      $var = std::string(c, len);
 
 T_STD_STRING_PTR
-    $var = new std::string( SvPV_nolen( $arg ), SvCUR( $arg ) );
+      size_t len;
+      const char * c = SvPV($arg, len);
+      $var = new std::string(c, len);
 
 OUTPUT
 T_STD_STRING
