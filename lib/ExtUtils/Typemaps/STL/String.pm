@@ -70,14 +70,18 @@ std::string   T_STD_STRING
 std::string*  T_STD_STRING_PTR
 
 T_STD_STRING
+    {
       size_t len;
       const char * c = SvPV($arg, len);
       $var = std::string(c, len);
+    }
 
 T_STD_STRING_PTR
+    {
       size_t len;
       const char * c = SvPV($arg, len);
       $var = new std::string(c, len);
+    }
 
 OUTPUT
 T_STD_STRING
