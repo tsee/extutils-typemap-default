@@ -348,7 +348,7 @@ L<ExtUtils::Typemaps::STL>, L<ExtUtils::Typemaps::STL::String>, L<ExtUtils::Type
 
 =head1 AUTHOR
 
-Steffen Mueller <smueller@cpan.org>
+Steffen Mueller <cpan@steffen-mueller.net>
 
 =head1 COPYRIGHT AND LICENSE
 
