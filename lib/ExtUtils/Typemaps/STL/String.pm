@@ -77,6 +77,7 @@ TYPEMAP
 std::string   T_STD_STRING
 std::string*  T_STD_STRING_PTR
 
+INPUT
 T_STD_STRING
     {
       size_t len;
