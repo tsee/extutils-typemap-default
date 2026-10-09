@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 
 use strict;
-use Test::More tests => 10;
+use Test::More tests => 11;
 
 use_ok( 'ExtUtils::Typemaps::STL::List' );
 use_ok( 'ExtUtils::Typemaps::STL' );
@@ -24,6 +24,10 @@ is(scalar(@guarded), 10, "All 10 av_extend calls are guarded with 'if (len)' (CV
 
 # Ensure there are no unguarded av_extend calls (all av_extend are guarded)
 is(scalar(@guarded), scalar(@all_av_extend), "No unguarded av_extend found in List typemaps");
+
+# Verify CSTRING list output typemaps increment index i (av_store(av, i++, ...))
+my @c_stores = ($lstr =~ /av_store\s*\(\s*av\s*,\s*i\+\+\s*,\s*newSVpv/g);
+cmp_ok(scalar(@c_stores), '>=', 2, "C-string list stores use i++ increment");
 
 # Verify merged ExtUtils::Typemaps::STL
 my $stl = ExtUtils::Typemaps::STL->new();

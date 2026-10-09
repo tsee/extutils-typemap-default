@@ -199,7 +199,7 @@ T_STD_LIST_CSTRING
 	std::list<char *>::const_iterator lend = $var.cend();
 	std::list<char *>::const_iterator lit  = $var.cbegin();
 	for (; lit != lend; ++lit) {
-	  av_store(av, i, newSVpv(*lit, (STRLEN)strlen(*lit)));
+	  av_store(av, i++, newSVpv(*lit, (STRLEN)strlen(*lit)));
 	}
 
 T_STD_LIST_CSTRING_PTR
@@ -212,7 +212,7 @@ T_STD_LIST_CSTRING_PTR
 	std::list<char *>::const_iterator lend = (*$var).cend();
 	std::list<char *>::const_iterator lit  = (*$var).cbegin();
 	for (; lit != lend; ++lit) {
-	  av_store(av, i, newSVpv(*lit, (STRLEN)strlen(*lit)));
+	  av_store(av, i++, newSVpv(*lit, (STRLEN)strlen(*lit)));
 	}
 
 END_OUTPUT
