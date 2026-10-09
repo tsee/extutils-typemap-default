@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 
 use strict;
-use Test::More tests => 11;
+use Test::More tests => 13;
 
 use_ok( 'ExtUtils::Typemaps::STL::List' );
 use_ok( 'ExtUtils::Typemaps::STL' );
@@ -40,3 +40,7 @@ my $def = ExtUtils::Typemaps::Default->new();
 my $def_str = $def->as_string;
 my @def_guarded = ($def_str =~ /if\s*\(\s*len\s*\)\s*\n\s*av_extend\s*\(\s*av\s*,\s*len-1\s*\);/g);
 cmp_ok(scalar(@def_guarded), '>=', 12, "Default merged typemap has guarded av_extend for both Vector and List");
+
+# Check version is 1.07
+is($ExtUtils::Typemaps::STL::List::VERSION, '1.07', "ExtUtils::Typemaps::STL::List version is 1.07");
+is($ExtUtils::Typemaps::Default::VERSION, '1.07', "ExtUtils::Typemaps::Default version is 1.07");
