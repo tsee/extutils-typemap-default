@@ -15,6 +15,15 @@ my $build = Module::Build->new(
   test_requires  => {
     'Test::More' => '0',
   },
+  meta_merge => {
+    'resources' => {
+      'repository' => {
+        type => 'git',
+        web  => 'https://github.com/tsee/extutils-typemap-default',
+        url  => 'https://github.com/tsee/extutils-typemap-default.git',
+      },
+    },
+  },
 );
 
 $build->create_build_script;
